@@ -5,58 +5,24 @@
 function configure_bash() {
   echo "Configuring Bash..."
 
-  cat ~/.bash_aliases | grep 'function docker-remove' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'function docker-remove() { CONTAINER_IDS=$(docker ps -a -q); IMAGE_IDS=$(docker images -q); VOLUMES=$(docker volume ls -f "dangling=true" | head -n -1); NETWORKS=$(docker network ls | grep -v "NETWORK" -q | awk "//{ print $1 }"); ! [ -z $CONTAINER_IDS ] && docker stop $CONTAINER_IDS && docker rm -f $CONTAINER_IDS; ! [ -z $IMAGE_IDS ] && docker rmi -f $IMAGE_IDS; ! [ -z $VOLUMES ] && docker volume rm $VOLUMES; ! [ -z $NETWORKS ] && docker network rm $NETWORKS}' >> ~/.bash_aliases
-  fi
-
   cat ~/.bash_aliases | grep 'alias me' > /dev/null
   if [ $? = 1 ]; then
-    echo 'alias me="curl ifconfig.me"' >> ~/.bash_aliases
+    echo 'alias me="curl ifconfig.me"' >> ${HOME}/.bash_aliases
   fi
 
   cat ~/.bash_aliases | grep 'alias pbcopy' > /dev/null
   if [ $? = 1 ]; then
-    echo 'alias pbcopy="xclip -selection clipboard"' >> ~/.bash_aliases
+    echo 'alias pbcopy="xclip -selection clipboard"' >> ${HOME}/.bash_aliases
   fi
 
   cat ~/.bash_aliases | grep 'alias pbpaste' > /dev/null
   if [ $? = 1 ]; then
-    echo 'alias pbpaste="xclip -selection clipboard -o"' >> ~/.bash_aliases
+    echo 'alias pbpaste="xclip -selection clipboard -o"' >> ${HOME}/.bash_aliases
   fi
 
   cat ~/.bash_aliases | grep 'alias clipboard' > /dev/null
   if [ $? = 1 ]; then
-    echo 'alias clipboard="xsel -i --clipboard"' >> ~/.bash_aliases
-  fi
-}
-
-function configure_zsh() {
-  echo "Configuring Zsh..."
-
-  cat ~/.zshrc | grep 'function docker-remove' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'function docker-remove() { CONTAINER_IDS=$(docker ps -a -q); IMAGE_IDS=$(docker images -q); VOLUMES=$(docker volume ls -f "dangling=true" | head -n -1); NETWORKS=$(docker network ls | grep -v "NETWORK" -q | awk "//{ print $1 }"); ! [ -z $CONTAINER_IDS ] && docker stop $CONTAINER_IDS && docker rm -f $CONTAINER_IDS; ! [ -z $IMAGE_IDS ] && docker rmi -f $IMAGE_IDS; ! [ -z $VOLUMES ] && docker volume rm $VOLUMES; ! [ -z $NETWORKS ] && docker network rm $NETWORKS}' >> ~/.zshrc
-  fi
-
-  cat ~/.zshrc | grep 'alias me' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'alias me="curl ifconfig.me"' >> ~/.zshrc
-  fi
-
-  cat ~/.zshrc | grep 'alias pbcopy' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'alias pbcopy="xclip -selection clipboard"' >> ~/.zshrc
-  fi
-
-  cat ~/.zshrc | grep 'alias pbpaste' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'alias pbpaste="xclip -selection clipboard -o"' >> ~/.zshrc
-  fi
-
-  cat ~/.zshrc | grep 'alias clipboard' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'alias clipboard="xsel -i --clipboard"' >> ~/.zshrc
+    echo 'alias clipboard="xsel -i --clipboard"' >> ${HOME}/.bash_aliases
   fi
 }
 
@@ -206,11 +172,6 @@ function install_maven3() {
 alias mcio="mvn clean install -o"' >> ${HOME}/.bash_aliases
 }
 
-function install_visualvm() {
-  echo "Installing visualvm..."
-  sdk install visualvm 1.4.4
-}
-
 function init_nvm() {
   [ -s "${HOME}/.nvm/nvm.sh" ] && \. "${HOME}/.nvm/nvm.sh"
   [ -s "${HOME}/.nvm/bash_completion" ] && \. "${HOME}/.nvm/bash_completion"
@@ -246,15 +207,6 @@ function install_docker() {
     sudo usermod -aG docker $CURRENT_USER
   else
     echo "Docker is already installed"
-  fi
-}
-
-function install_docker_compose() {
-  if ! [ -x "$(command -v docker-compose)" ]; then
-    echo "Installing Docker-Compose ..."
-    cd ~ && sudo curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
-  else
-    echo "Docker-Compose is already installed"
   fi
 }
 
@@ -307,17 +259,6 @@ Categories=Development;IDE;
 Name[en]=Eclipse" > $ECLIPSE_DESKTOP_FILE_DIRECTORY/eclipse.desktop
 }
 
-function install_brave_browser() {
-  if ! [ -x "$(command -v brave-browser)" ]; then
-    echo "Installing brave-browser..."
-    cd ~ && curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add - && \
-    echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list && \
-    sudo apt update && sudo apt install -y brave-browser
-  else
-    echo "Brave is already installed"
-  fi
-}
-
 function install_kubectl() {
   if ! [ -x "$(command -v kubectl)" ]; then
     cd ~ && curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl && chmod u+x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
@@ -345,7 +286,7 @@ function install_virtualbox() {
 
 function install_micro() {
   if ! [ -x "$(command -v micro)" ]; then
-    cd ~ && curl https://getmic.ro | bash && mv micro /usr/local/bin
+    cd ~ && curl https://getmic.ro | bash && sudo mv micro /usr/local/bin
   else
     echo "Micro is already installed"
   fi    
@@ -360,10 +301,6 @@ function install_code() {
   else
     echo "Code is already installed"
   fi    
-}
-
-function install_zsh() {
-  sudo apt-get install zsh -y     
 }
 
 function install_golang() {
@@ -417,6 +354,7 @@ function main() {
   [ -z "$INSTALL_GOLANG" ] && INSTALL_GOLANG="y"
 
   install_libraries && \
+  configure_bash && \
   install_terminator && \
   install_vim && \
   install_git && \
@@ -429,14 +367,10 @@ function main() {
   install_docker && \
   install_docker_compose && \
   install_eclipse && \
-  install_brave_browser && \
   install_kubectl && \
   install_helm3 && \
   install_micro && \
-  install_code && \
-  install_zsh && \
-  configure_bash && \
-  configure_zsh
+  install_code 
 
   [ $INSTALL_GOLANG = "y" ] && install_golang
   [ $INSTALL_VIRTUALBOX = "y" ] && install_virtualbox

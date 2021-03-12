@@ -23,6 +23,7 @@ function install_ohmyzsh() {
 }
 
 function main() {
+  sudo apt-get update && sudo apt-get install zsh && \
   install_ohmyzsh && \
   install_ohmyzsh_plugins && \
   echo "Installation completed: add zsh-nvm and zsh-sdkman into plugin in ~/.zshrc. Example: " && \

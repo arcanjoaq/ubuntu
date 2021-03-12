@@ -45,18 +45,14 @@ wget --no-cache 'https://raw.githubusercontent.com/ArcanjoQueiroz/ubuntu/master/
 * Docker CE
 * Docker-Compose
 * Java
-* Maven
+* Golang
 * Node.js
+* Maven
 * Eclipse Java EE
-* Code
+* Micro editor
 * Vim
-* Brave Browser
-* Visualvm
 * Kubectl
 * Helm 3
-* Micro editor
-* Zsh
-* Golang
 * Virtualbox
 
 ### Licensing
