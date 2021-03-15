@@ -16,6 +16,15 @@ function install_ohmyzsh_plugins() {
   fi
 }
 
+function add_bash_aliases() {
+  cat ~/.zshrc | grep '.bash_aliases' > /dev/null
+  if [ $? = 1 ]; then
+	echo "if [ -f ~/.bash_aliases ]; then
+	    . ~/.bash_aliases
+	fi" > ~/.zshrc
+  fi	
+}
+
 function install_ohmyzsh() {
   if [ ! -d "${HOME}/.oh-my-zsh" ]; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -23,9 +32,9 @@ function install_ohmyzsh() {
 }
 
 function main() {
-  sudo apt-get update && sudo apt-get install zsh && \
   install_ohmyzsh && \
   install_ohmyzsh_plugins && \
+  add_bash_aliases && \
   echo "Installation completed: add zsh-nvm and zsh-sdkman into plugin in ~/.zshrc. Example: " && \
   echo "plugins=(git zsh-sdkman zsh-nvm)"
 }

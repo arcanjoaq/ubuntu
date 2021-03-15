@@ -289,7 +289,11 @@ function install_micro() {
     cd ~ && curl https://getmic.ro | bash && sudo mv micro /usr/local/bin
   else
     echo "Micro is already installed"
-  fi    
+  fi
+  sudo apt-get install editorconfig -y
+  if  [ -f "/usr/local/bin/micro" ]; then
+    /usr/local/bin/micro -plugin install editorconfig    
+  fi
 }
 
 function install_code() {
