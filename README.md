@@ -1,6 +1,6 @@
 ## Ubuntu Installation Script
 
-[![Build Status](https://travis-ci.org/ArcanjoQueiroz/ubuntu.svg?branch=master)](https://travis-ci.org/ArcanjoQueiroz/ubuntu)
+[![Build Status](https://travis-ci.org/arcanjoaq/ubuntu.svg?branch=master)](https://travis-ci.org/arcanjoaq/ubuntu)
 
 This project is an installation script that allows the installation of programming languages, binaries and utilities in one command!!!
 
@@ -14,25 +14,25 @@ This project is an installation script that allows the installation of programmi
 The following example shows how to use the installation script:
 
 ```sh
-curl -s 'https://raw.githubusercontent.com/ArcanjoQueiroz/ubuntu/master/install.sh' | bash
+curl -s 'https://raw.githubusercontent.com/arcanjoaq/ubuntu/master/install.sh' | bash
 ```
 
 or
 
 ```sh
-wget --no-cache 'https://raw.githubusercontent.com/ArcanjoQueiroz/ubuntu/master/install.sh' && chmod u+x install.sh && ./install.sh
+wget --no-cache 'https://raw.githubusercontent.com/arcanjoaq/ubuntu/master/install.sh' && chmod u+x install.sh && ./install.sh
 ```
 
 You can install *Oh my Zsh!* using the following script:
 
 ```sh
-curl -s 'https://raw.githubusercontent.com/ArcanjoQueiroz/ubuntu/master/install_ohmyzsh.sh' | bash
+curl -s 'https://raw.githubusercontent.com/arcanjoaq/ubuntu/master/install_ohmyzsh.sh' | bash
 ```
 
 or
 
 ```sh
-wget --no-cache 'https://raw.githubusercontent.com/ArcanjoQueiroz/ubuntu/master/install_ohmyzsh.sh' && chmod u+x install_ohmyzsh.sh && ./install_ohmyzsh.sh
+wget --no-cache 'https://raw.githubusercontent.com/arcanjoaq/ubuntu/master/install_ohmyzsh.sh' && chmod u+x install_ohmyzsh.sh && ./install_ohmyzsh.sh
 ```
 
 ### What does the script install?
