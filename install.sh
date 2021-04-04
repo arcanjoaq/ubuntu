@@ -114,7 +114,8 @@ function install_libraries() {
         jq \
         xclip \
         xsel \
-        htop
+        htop \
+        ncdu
 }
 
 function install_terminator() {
