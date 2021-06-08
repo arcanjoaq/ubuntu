@@ -2,30 +2,6 @@
 
 # Configuration functions
 
-function configure_bash() {
-  echo "Configuring Bash..."
-
-  cat ~/.bash_aliases | grep 'alias me' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'alias me="curl ifconfig.me"' >> ${HOME}/.bash_aliases
-  fi
-
-  cat ~/.bash_aliases | grep 'alias pbcopy' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'alias pbcopy="xclip -selection clipboard"' >> ${HOME}/.bash_aliases
-  fi
-
-  cat ~/.bash_aliases | grep 'alias pbpaste' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'alias pbpaste="xclip -selection clipboard -o"' >> ${HOME}/.bash_aliases
-  fi
-
-  cat ~/.bash_aliases | grep 'alias clipboard' > /dev/null
-  if [ $? = 1 ]; then
-    echo 'alias clipboard="xsel -i --clipboard"' >> ${HOME}/.bash_aliases
-  fi
-}
-
 function configure_git() {
   echo "Configuring Git..."
   echo ".classpath
@@ -125,16 +101,18 @@ function install_terminator() {
 
 function install_vim() {
   echo "Installing Vim..."
-  sudo apt-get install -y vim && configure_vim
+  sudo apt-get install -y vim 
+  configure_vim
 }
 
 function install_git() {
   if ! [ -x "$(command -v git)" ]; then
     echo "Installing Git..."
-    sudo apt-get install -y git && configure_git
+    sudo apt-get install -y git
   else
     echo "Git is already installed"
   fi
+  configure_git
 }
 
 function install_meld() {
@@ -163,7 +141,7 @@ function install_sdkman() {
 
 function install_java() {
   echo "Installing Java..."
-  sdk install java 11.0.10-zulu
+  sdk install java 13.0.1-zulu
 }
 
 function install_maven3() {
@@ -262,7 +240,8 @@ Name[en]=Eclipse" > $ECLIPSE_DESKTOP_FILE_DIRECTORY/eclipse.desktop
 
 function install_kubectl() {
   if ! [ -x "$(command -v kubectl)" ]; then
-    cd ~ && curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl && chmod u+x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
+    cd ~ && curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl && \
+    chmod u+x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
   else
     echo "Kubectl is already installed"
   fi
@@ -274,15 +253,6 @@ function install_helm3() {
   else
     echo "Helm 3 is already installed"
   fi    
-}
-
-function install_virtualbox() {
-  if ! [ -x "$(command -v virtualbox)" ]; then
-    cd ~ && curl -Lo virtualbox "https://download.virtualbox.org/virtualbox/6.1.18/VirtualBox-6.1.18-142142-Linux_amd64.run" && chmod u+x virtualbox && \
-    sudo ./virtualbox && rm virtualbox
-  else
-    echo "Virtualbox is already installed"
-  fi
 }
 
 function install_micro() {
@@ -302,36 +272,12 @@ function install_code() {
     cd ~ && wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg && \
     sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ && \
     sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list' && \
-    sudo apt-get update && sudo apt-get install code -y && rm packages.microsoft.gpg
+    sudo apt-get update && \
+    sudo apt-get install code -y && \
+    rm packages.microsoft.gpg
   else
     echo "Code is already installed"
   fi    
-}
-
-function install_golang() {
-  if ! [ -d "/usr/local/go" ]; then
-    echo "Installing Golang..."
-    GO_VERSION=go1.16
-    cd ~
-    if [ ! -f "${GO_VERSION}.linux-amd64.tar.gz" ]; then
-      wget https://dl.google.com/go/${GO_VERSION}.linux-amd64.tar.gz -O ${GO_VERSION}.linux-amd64.tar.gz
-    fi
-    tar -xzf ${GO_VERSION}.linux-amd64.tar.gz && \
-      mv go ${GO_VERSION} && \
-      sudo mv ${GO_VERSION} /usr/local/${GO_VERSION} && \
-      sudo ln -sf /usr/local/${GO_VERSION} /usr/local/go && \
-      rm ${GO_VERSION}.linux-amd64.tar.gz && \
-      mkdir -p ${HOME}/golang && \
-      echo 'export GOPATH=${HOME}/golang' >> ${HOME}/.profile && \
-      echo 'export PATH=${PATH}:/usr/local/go/bin' >> ${HOME}/.profile && \
-      echo 'export GOBIN=/usr/local/go/bin' >> ${HOME}/.profile && \
-      source ${HOME}/.profile && \
-      echo "Installing godep..." && \
-      curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh && \
-      echo 'alias dep="${GOPATH}/bin/dep"' >> ${HOME}/.bash_aliases
-  else
-    echo "GoLang is already installed"
-  fi
 }
 
 # Main
@@ -355,11 +301,7 @@ function main() {
     sudo apt-get update
   fi
 
-  [ -z "$INSTALL_VIRTUALBOX" ] && INSTALL_VIRTUALBOX="y"
-  [ -z "$INSTALL_GOLANG" ] && INSTALL_GOLANG="y"
-
   install_libraries && \
-  configure_bash && \
   install_terminator && \
   install_vim && \
   install_git && \
@@ -370,18 +312,13 @@ function main() {
   install_nvm && \
   install_npm && \
   install_docker && \
-  install_docker_compose && \
   install_eclipse && \
   install_kubectl && \
   install_helm3 && \
   install_micro && \
   install_code 
 
-  [ $INSTALL_GOLANG = "y" ] && install_golang
-  [ $INSTALL_VIRTUALBOX = "y" ] && install_virtualbox
-
   echo "Installation was finished. Reboot your system and happy coding...!!!"
-  echo "Tip: Go to https://ohmyz.sh/ and install Oh My Zsh!! :D"
 }
 
 main

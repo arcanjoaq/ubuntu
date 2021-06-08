@@ -1,5 +1,9 @@
 #!/bin/bash
 
+function install_zsh() {
+	sudo apt-get install -u zsh
+}
+
 function install_ohmyzsh_plugins() {
   if [ ! -d "${HOME}/.oh-my-zsh/custom/plugins/zsh-nvm" ]; then
     cd ${HOME}/.oh-my-zsh/custom/plugins && \
@@ -32,6 +36,7 @@ function install_ohmyzsh() {
 }
 
 function main() {
+  install_zsh && \
   install_ohmyzsh && \
   install_ohmyzsh_plugins && \
   add_bash_aliases && \
