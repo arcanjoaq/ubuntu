@@ -141,7 +141,7 @@ function install_sdkman() {
 
 function install_java() {
   echo "Installing Java..."
-  sdk install java 13.0.1-zulu
+  sdk install java 11.0.11-zulu
 }
 
 function install_maven3() {
