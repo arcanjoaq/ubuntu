@@ -1,7 +1,0 @@
-language: bash
-
-services:
-  - docker
-
-script:
-    - bash test_ubuntu-20.04.sh

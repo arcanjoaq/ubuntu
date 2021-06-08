@@ -1,7 +1,5 @@
 ## Ubuntu Installation Script
 
-[![Build Status](https://travis-ci.org/arcanjoaq/ubuntu.svg?branch=master)](https://travis-ci.org/arcanjoaq/ubuntu)
-
 This project is an installation script that allows the installation of programming languages, binaries and utilities in one command!!!
 
 ### Supported Operating Systems
@@ -45,7 +43,6 @@ wget --no-cache 'https://raw.githubusercontent.com/arcanjoaq/ubuntu/master/insta
 * Docker CE
 * Docker-Compose
 * Java
-* Golang
 * Node.js
 * Maven
 * Eclipse Java EE
@@ -53,7 +50,10 @@ wget --no-cache 'https://raw.githubusercontent.com/arcanjoaq/ubuntu/master/insta
 * Vim
 * Kubectl
 * Helm 3
-* Virtualbox
+* Code
+* AWS CLI
+* psql
+* mongodb-org-shell (mongo) and mongodb-org-tools (mongoimport, mongoexport, mongodump and mongorestore)
 
 ### Licensing
 

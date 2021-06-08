@@ -82,6 +82,7 @@ function install_libraries() {
         openvpn \
         openssh-client \
         openssh-server \
+        net-tools \
         zip \
         unzip \
         sed \
@@ -280,6 +281,31 @@ function install_code() {
   fi    
 }
 
+function install_aws_cli() {
+  if ! [ -x "$(command -v aws)" ]; then
+    cd /tmp && \
+	  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+	  unzip awscliv2.zip && \
+	  sudo ./aws/install && \
+	  rm -rf aws && \
+	  rm -rf awscliv2.zip 
+  fi	
+}
+
+function install_psql() {
+  if ! [ -x "$(command -v psql)" ]; then
+    sudo apt-get install -y postgresql-client
+  fi	
+}
+
+function install_mongo() {
+  if ! [ -x "$(command -v mongo)" ]; then
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+    echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+    sudo apt-get update && sudo apt-get install -y mongodb-org-shell mongodb-org-tools
+  fi	
+}
+
 # Main
 
 function main() {
@@ -316,8 +342,10 @@ function main() {
   install_kubectl && \
   install_helm3 && \
   install_micro && \
-  install_code 
-
+  install_code && \
+  install_aws_cli && \
+  install_psql && \
+  install_mongo && \
   echo "Installation was finished. Reboot your system and happy coding...!!!"
 }
 
