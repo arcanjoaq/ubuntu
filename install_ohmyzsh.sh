@@ -33,8 +33,7 @@ function main() {
   install_zsh && \
   install_ohmyzsh && \
   install_ohmyzsh_plugins && \
-  echo "Installation completed: add zsh-nvm and zsh-sdkman into plugin in ~/.zshrc. Example: " && \
-  echo "plugins=(git zsh-sdkman zsh-nvm docker)"
+  sed -i 's/.*plugins=(.*/plugins=(git zsh-sdkman zsh-nvm docker)/' ~/.zshrc
 }
 
 main

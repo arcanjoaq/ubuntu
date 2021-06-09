@@ -148,8 +148,8 @@ function install_java() {
 function install_maven3() {
   echo "Installing Maven..."
   sdk install maven 3.6.3
-  echo 'alias mci="mvn clean install"
-alias mcio="mvn clean install -o"' >> ${HOME}/.bash_aliases
+  echo 'alias mci="mvn clean install"' | tee -a ${HOME}/.bash_aliases
+  echo 'alias mcio="mvn clean install -o"' | tee -a ${HOME}/.bash_aliases
 }
 
 function init_nvm() {
@@ -242,7 +242,8 @@ Name[en]=Eclipse" > $ECLIPSE_DESKTOP_FILE_DIRECTORY/eclipse.desktop
 function install_kubectl() {
   if ! [ -x "$(command -v kubectl)" ]; then
     cd ~ && curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl && \
-    chmod u+x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
+    chmod u+x ./kubectl && \
+    sudo mv ./kubectl /usr/local/bin/kubectl
   else
     echo "Kubectl is already installed"
   fi
