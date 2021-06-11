@@ -310,6 +310,18 @@ function install_mongo() {
   fi	
 }
 
+function install_postman() {
+  sudo snap install postman
+}
+
+function install_idea() {
+  sudo snap install intellij-idea-community --classic
+}
+
+function install_gradle() {
+  sdk install gradle 7.0.2
+}
+
 # Main
 
 function main() {
@@ -347,6 +359,9 @@ function main() {
   install_aws_cli
   install_psql
   install_mongo
+  install_postman
+  install_idea
+  install_gradle
 }
 
 main
