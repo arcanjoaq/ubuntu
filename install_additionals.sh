@@ -1,7 +1,6 @@
 #!/bin/bash
 function install_golang() {
   if ! [ -d "/usr/local/go" ]; then
-    echo "Installing Golang..."
     GO_VERSION=go1.16.5
     cd ~
     if [ ! -f "${GO_VERSION}.linux-amd64.tar.gz" ]; then
@@ -12,10 +11,17 @@ function install_golang() {
       sudo mv ${GO_VERSION} /usr/local/${GO_VERSION} && \
       sudo ln -sf /usr/local/${GO_VERSION} /usr/local/go && \
       rm ${GO_VERSION}.linux-amd64.tar.gz && \
-      mkdir -p ${HOME}/golang && \
-      echo 'export GOPATH=${HOME}/golang' | tee -a ${HOME}/.profile && \
-      echo 'export PATH=${PATH}:/usr/local/go/bin' | tee -a ${HOME}/.profile && \
-      echo 'export GOBIN=/usr/local/go/bin' | tee -a ${HOME}/.profile && \
+      mkdir -p ${HOME}/golang
+
+      cat ${HOME}/.profile | grep 'export GOPATH=' > /dev/null 2>&1
+      [ $? -ne 0 ] && echo 'export GOPATH=${HOME}/golang' | tee -a ${HOME}/.profile
+      
+      cat ${HOME}/.profile | grep 'export PATH=${PATH}:/usr/local/go/bin' > /dev/null 2>&1
+      [ $? -ne 0 ] && echo 'export PATH=${PATH}:/usr/local/go/bin' | tee -a ${HOME}/.profile
+
+      cat ${HOME}/.profile | grep 'export GOBIN=' > /dev/null 2>&1
+      [ $? -ne 0 ] && echo 'export GOBIN=/usr/local/go/bin' | tee -a ${HOME}/.profile
+
       source ${HOME}/.profile
   else
     echo "GoLang is already installed"
@@ -44,9 +50,15 @@ function install_antlr() {
   if ! [ -f "/usr/local/lib/antlr-4.9.2-complete.jar" ]; then
     cd /usr/local/lib
     sudo curl -O https://www.antlr.org/download/antlr-4.9.2-complete.jar
-    echo 'export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"' | sudo tee -a /etc/profile
-    echo "alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'" | sudo tee -a /etc/profile
-    echo "alias grun='java org.antlr.v4.gui.TestRig'" | sudo tee -a /etc/profile
+
+    cat ${HOME}/.bash_aliases | grep 'alias antlr4=' > /dev/null 2>&1
+    [ $? -ne 0 ] && echo "alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'" | tee -a ${HOME}/.bash_aliases
+
+    cat ${HOME}/.bash_aliases | grep 'alias grun=' > /dev/null 2>&1
+    [ $? -ne 0 ] && echo "alias grun='java org.antlr.v4.gui.TestRig'" | tee -a ${HOME}/.bash_aliases
+
+    cat ${HOME}/.profile | grep 'export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"' > /dev/null 2>&1
+    [ $? -ne 0 ] && echo 'export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"' | tee -a ${HOME}/.profile
   fi    
 }
 

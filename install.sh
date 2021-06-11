@@ -3,7 +3,6 @@
 # Configuration functions
 
 function configure_git() {
-  echo "Configuring Git..."
   echo ".classpath
 .project
 .settings
@@ -37,7 +36,6 @@ package.lock" > ~/.gitignore && \
 }
 
 function configure_vim() {
-  echo "Configuring vim..."
   echo 'syntax enable
 
 set autoindent
@@ -65,50 +63,56 @@ autocmd FileType ruby,javascript,java,python,bash,sh,html,css,yaml,make autocmd 
 # Installation functions
 
 function install_libraries() {
-    echo "Installing Libraries..."
-        sudo apt-get install -y build-essential \
-        checkinstall \
-        libreadline-gplv2-dev \
-        libncursesw5-dev \
-        libssl-dev \
-        libsqlite3-dev \
-        tk-dev \
-        libgdbm-dev \
-        libc6-dev \
-        libbz2-dev \
-        apt-transport-https \
-        ca-certificates \
-        software-properties-common \
-        openvpn \
-        openssh-client \
-        openssh-server \
-        net-tools \
-        zip \
-        unzip \
-        sed \
-        curl \
-        wget \
-        jq \
-        xclip \
-        xsel \
-        htop \
-        ncdu
+  sudo apt-get install -y build-essential \
+    checkinstall \
+    libreadline-gplv2-dev \
+    libncursesw5-dev \
+    libssl-dev \
+    libsqlite3-dev \
+    tk-dev \
+    libgdbm-dev \
+    libc6-dev \
+    libbz2-dev \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common \
+    openvpn \
+    openssh-client \
+    openssh-server \
+    net-tools \
+    zip \
+    unzip \
+    sed \
+    curl \
+    wget \
+    jq \
+    xclip \
+    xsel \
+    htop \
+    ncdu
+
+  cat ${HOME}/.bash_aliases | grep 'alias pbcopy=' > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'alias pbcopy="xclip -selection clipboard"' | tee -a ${HOME}/.bash_aliases
+
+  cat ${HOME}/.bash_aliases | grep 'alias pbpaste=' > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'alias pbpaste="xclip -selection clipboard -o"' | tee -a ${HOME}/.bash_aliases
+
+  cat ${HOME}/.bash_aliases | grep 'alias clipboard=' > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'alias clipboard="xsel -i --clipboard"' | tee -a ${HOME}/.bash_aliases
+
 }
 
 function install_terminator() {
-  echo "Installing Terminator..."
   sudo apt-get install -y terminator
 }
 
 function install_vim() {
-  echo "Installing Vim..."
   sudo apt-get install -y vim 
   configure_vim
 }
 
 function install_git() {
   if ! [ -x "$(command -v git)" ]; then
-    echo "Installing Git..."
     sudo apt-get install -y git
   else
     echo "Git is already installed"
@@ -118,7 +122,6 @@ function install_git() {
 
 function install_meld() {
   if ! [ -x "$(command -v meld)" ]; then
-    echo "Installing Meld..."
     sudo apt-get install -y meld
   else
     echo "Meld is already installed"
@@ -131,7 +134,6 @@ function init_sdkman() {
 
 function install_sdkman() {
   if ! [ -x "${HOME}/.sdkman" ]; then
-    echo "Installing SDKMan..."
     cd ~ && curl -s "https://get.sdkman.io" | bash
   else
     echo "SKDMan is already installed"
@@ -141,15 +143,24 @@ function install_sdkman() {
 }
 
 function install_java() {
-  echo "Installing Java..."
   sdk install java 11.0.11-zulu
 }
 
 function install_maven3() {
-  echo "Installing Maven..."
   sdk install maven 3.6.3
-  echo 'alias mci="mvn clean install"' | tee -a ${HOME}/.bash_aliases
-  echo 'alias mcio="mvn clean install -o"' | tee -a ${HOME}/.bash_aliases
+
+  cat ${HOME}/.bash_aliases | grep 'alias mci=' > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'alias mci="mvn clean install"' | tee -a ${HOME}/.bash_aliases
+
+  cat ${HOME}/.bash_aliases | grep 'alias mcio=' > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'alias mcio="mvn clean install -o"' | tee -a ${HOME}/.bash_aliases
+
+  cat ${HOME}/.bash_aliases | grep 'alias mcisbr=' > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'alias mcisbr="mvn clean install spring-boot:run"' | tee -a ${HOME}/.bash_aliases
+
+  cat ${HOME}/.bash_aliases | grep 'alias mciosbr=' > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'alias mciosbr="mvn clean install -o spring-boot:run"' | tee -a ${HOME}/.bash_aliases
+ 
 }
 
 function init_nvm() {
@@ -159,7 +170,6 @@ function init_nvm() {
 
 function install_nvm() {
   if ! [ -x "${HOME}/.nvm" ]; then
-    echo "Installing NVM..."
     cd ~ && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash && source ~/.bashrc
     init_nvm
   else
@@ -178,7 +188,6 @@ function install_npm() {
 
 function install_docker() {
   if ! [ -x "$(command -v docker)" ]; then
-    echo "Installing Docker..."
     sudo apt-get update && sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common && \
     cd ~ && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable" && \
@@ -195,30 +204,24 @@ function install_eclipse() {
     ECLIPSE_HOME=${TARGET_DIRECTORY}/eclipse
 
     if [ ! -d "$ECLIPSE_HOME" ]; then
-      echo "Installing Eclipse IDE..."
-
       mkdir -p ${TARGET_DIRECTORY} && cd ${TARGET_DIRECTORY}
       if [ -e "${TARGET_DIRECTORY}/eclipse-jee.tar.gz" ]; then
         echo "Eclipse File already downloaded";
       else
-        echo "Downloading Eclipse Java EE ...";
         wget -O eclipse-jee.tar.gz https://www.eclipse.org/downloads/download.php\?file\=/technology/epp/downloads/release/2020-12/R/eclipse-jee-2020-12-R-linux-gtk-x86_64.tar.gz\&r\=1
       fi
 
       if [ -d "${TARGET_DIRECTORY}/eclipse" ]; then
         echo "Eclipse was already installed"
       else
-        echo "Extracting Eclipse Java EE ..."
         tar -xvzf ${TARGET_DIRECTORY}/eclipse-jee.tar.gz && \
           rm ${TARGET_DIRECTORY}/eclipse-jee.tar.gz
 
-        echo "Configuring eclipse.ini..."
         ECLIPSE_INI=${ECLIPSE_HOME}/eclipse.ini
         sed 's/-Xms.*/-Xms1024m/g' -i ${ECLIPSE_INI}
         sed 's/-Xmx.*/-Xmx4096m/g' -i ${ECLIPSE_INI}
 
         JAVA_BIN_PATH=${HOME}/.sdkman/candidates/java/current/bin
-        echo "Configuring Eclipse VM ..."
         sed "s#-vmargs#-vm\n${JAVA_BIN_PATH}\n-vmargs#" -i ${ECLIPSE_INI}
       fi
     else
@@ -226,7 +229,6 @@ function install_eclipse() {
     fi
 
     ECLIPSE_DESKTOP_FILE_DIRECTORY=${HOME}/.local/share/applications
-    echo "Configuring eclipse.desktop file..."
     mkdir -p $ECLIPSE_DESKTOP_FILE_DIRECTORY && echo "[Desktop Entry]
 Name=Eclipse
 Type=Application
@@ -303,15 +305,14 @@ function install_mongo() {
   if ! [ -x "$(command -v mongo)" ]; then
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
     echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
-    sudo apt-get update && sudo apt-get install -y mongodb-org-shell mongodb-org-tools
+    sudo apt-get update && \
+      sudo apt-get install -y mongodb-org-shell mongodb-org-tools
   fi	
 }
 
 # Main
 
 function main() {
-  echo "Preparing installation..."
-
   if [ -z "$USER" ]; then
     CURRENT_USER=$(id -un)
   else
@@ -324,30 +325,28 @@ function main() {
   if ! [ -x "$(command -v sudo)" ]; then
     apt-get update && apt-get install sudo
   else
-    echo "Updating definitions..."
     sudo apt-get update
   fi
 
-  install_libraries && \
-  install_terminator && \
-  install_vim && \
-  install_git && \
-  install_meld && \
-  install_sdkman && \
-  install_java && \
-  install_maven3 && \
-  install_nvm && \
-  install_npm && \
-  install_docker && \
-  install_eclipse && \
-  install_kubectl && \
-  install_helm3 && \
-  install_micro && \
-  install_code && \
-  install_aws_cli && \
-  install_psql && \
-  install_mongo && \
-  echo "Installation was finished. Reboot your system and happy coding...!!!"
+  install_libraries
+  install_terminator
+  install_vim
+  install_git
+  install_meld
+  install_sdkman
+  install_java
+  install_maven3
+  install_nvm
+  install_npm
+  install_docker
+  install_eclipse
+  install_kubectl
+  install_helm3
+  install_micro
+  install_code
+  install_aws_cli
+  install_psql
+  install_mongo
 }
 
 main
