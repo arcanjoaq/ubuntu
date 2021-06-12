@@ -33,7 +33,7 @@ function main() {
   install_zsh
   install_ohmyzsh
   install_ohmyzsh_plugins
-  sed -i 's/.*plugins=(.*/plugins=(git zsh-sdkman zsh-nvm docker)/' ~/.zshrc
+  sed -i 's/.*plugins=(.*/plugins=(git zsh-sdkman zsh-nvm docker kubectl)/' ~/.zshrc
 }
 
 main
