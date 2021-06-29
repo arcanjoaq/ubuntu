@@ -89,7 +89,8 @@ function install_libraries() {
     xclip \
     xsel \
     htop \
-    ncdu
+    ncdu \
+    tldr
 
   cat ${HOME}/.bash_aliases | grep 'alias pbcopy=' > /dev/null 2>&1
   [ $? -ne 0 ] && echo 'alias pbcopy="xclip -selection clipboard"' | tee -a ${HOME}/.bash_aliases
