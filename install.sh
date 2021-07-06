@@ -200,6 +200,20 @@ function install_docker() {
   fi
 }
 
+function install_docker_compose() {
+  if ! [ -x "$(command -v docker)" ]; then
+    DOCKER_COMPOSE_VERSION=1.29.2
+    DOCKER_COMPOSE_DIR=/usr/local/bin
+    sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64" -o ${DOCKER_COMPOSE_DIR}/docker-compose && \
+    sudo chmod u+x ${DOCKER_COMPOSE_DIR}/docker-compose && \
+    sudo ln -sf ${DOCKER_COMPOSE_DIR}/docker-compose /usr/bin/docker-compose && \
+    ${DOCKER_COMPOSE_DIR}/docker-compose --version && \
+    sudo curl -L "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
+  else
+    echo "Docker Compose is already installed"
+  fi	
+}
+
 function install_eclipse() {
     TARGET_DIRECTORY=${HOME}/bin
     ECLIPSE_HOME=${TARGET_DIRECTORY}/eclipse
@@ -352,6 +366,7 @@ function main() {
   install_nvm
   install_npm
   install_docker
+  install_docker_compose
   install_eclipse
   install_kubectl
   install_helm3
