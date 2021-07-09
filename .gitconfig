@@ -1,0 +1,27 @@
+[core]
+	excludesfile = ~/.gitignore
+	editor = micro
+	commentchar = @
+[diff]
+	tool = meld
+[difftool]
+	prompt = false
+[merge]
+	tool = meld
+[mergetool]
+	keepbackup = false
+[http]
+	postBuffer = 524288000
+	sslVerify = false
+[grep]
+	lineNumber = true
+[pull]
+	rebase = false
+[remote "origin"]
+	prune = true
+[alias]
+	s = stash --all
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[user]
+	name = Alexandre Arcanjo de Queiroz
+	email = 1619912+arcanjoaq@users.noreply.github.com

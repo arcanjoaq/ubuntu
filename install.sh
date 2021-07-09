@@ -1,133 +1,6 @@
 #!/bin/bash
-
-# Configuration functions
-
-function configure_git() {
-  echo ".classpath
-.project
-.settings
-target
-bin
-.idea
-*.log
-*.*~
-*.out
-.class
-*.pyc
-*.pyo
-*.swp
-*.swo
-node_modules
-package.lock" > ~/.gitignore && \
-        git config --global core.excludesfile ~/.gitignore && \
-        git config --global diff.tool meld && \
-        git config --global difftool.prompt false && \
-        git config --global merge.tool meld && \
-        git config --global mergetool.keepbackup false && \
-        git config --global core.editor "micro" && \
-        git config --global core.commentchar "@" && \
-        git config --global http.postBuffer 524288000 && \
-        git config --global http.sslVerify false && \
-        git config --global grep.lineNumber true && \
-        git config --global pull.rebase false && \
-        git config --global remote.origin.prune true && \
-        git config --global alias.s 'stash --all' && \
-        git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-}
-
-function configure_vim() {
-  echo 'syntax enable
-
-set autoindent
-set smartindent
-
-set number
-set encoding=utf-8
-
-set ignorecase
-set hlsearch
-set incsearch
-
-nnoremap <esc><esc> :noh<return>
-
-set clipboard=unnamedplus
-
-autocmd FileType html,css,ruby,javascript,java,dart,kotlin setlocal ts=2 sts=2 sw=2 expandtab
-autocmd FileType python,bash,sh setlocal ts=4 sts=4 sw=4 expandtab
-autocmd FileType make setlocal noexpandtab
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-autocmd FileType ruby,javascript,java,python,bash,sh,html,css,yaml,make autocmd BufWritePre * %s/\s\+$//e' > ~/.vimrc
-}
-
-# Installation functions
-
-function install_libraries() {
-  sudo apt-get install -y build-essential \
-    checkinstall \
-    libreadline-gplv2-dev \
-    libncursesw5-dev \
-    libssl-dev \
-    libsqlite3-dev \
-    tk-dev \
-    libgdbm-dev \
-    libc6-dev \
-    libbz2-dev \
-    apt-transport-https \
-    ca-certificates \
-    software-properties-common \
-    openvpn \
-    openssh-client \
-    openssh-server \
-    net-tools \
-    zip \
-    unzip \
-    sed \
-    curl \
-    wget \
-    jq \
-    xclip \
-    xsel \
-    htop \
-    ncdu \
-    tldr
-
-  cat ${HOME}/.bash_aliases | grep 'alias pbcopy=' > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'alias pbcopy="xclip -selection clipboard"' | tee -a ${HOME}/.bash_aliases
-
-  cat ${HOME}/.bash_aliases | grep 'alias pbpaste=' > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'alias pbpaste="xclip -selection clipboard -o"' | tee -a ${HOME}/.bash_aliases
-
-  cat ${HOME}/.bash_aliases | grep 'alias clipboard=' > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'alias clipboard="xsel -i --clipboard"' | tee -a ${HOME}/.bash_aliases
-
-}
-
-function install_terminator() {
-  sudo apt-get install -y terminator
-}
-
-function install_vim() {
-  sudo apt-get install -y vim 
-  configure_vim
-}
-
-function install_git() {
-  if ! [ -x "$(command -v git)" ]; then
-    sudo apt-get install -y git
-  else
-    echo "Git is already installed"
-  fi
-  configure_git
-}
-
-function install_meld() {
-  if ! [ -x "$(command -v meld)" ]; then
-    sudo apt-get install -y meld
-  else
-    echo "Meld is already installed"
-  fi
-}
+SCRIPT=$(readlink -f "$0")
+SCRIPT_PATH=$(dirname "$SCRIPT")
 
 function init_sdkman() {
   [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
@@ -149,19 +22,6 @@ function install_java() {
 
 function install_maven3() {
   sdk install maven 3.6.3
-
-  cat ${HOME}/.bash_aliases | grep 'alias mci=' > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'alias mci="mvn clean install"' | tee -a ${HOME}/.bash_aliases
-
-  cat ${HOME}/.bash_aliases | grep 'alias mcio=' > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'alias mcio="mvn clean install -o"' | tee -a ${HOME}/.bash_aliases
-
-  cat ${HOME}/.bash_aliases | grep 'alias mcisbr=' > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'alias mcisbr="mvn clean install spring-boot:run"' | tee -a ${HOME}/.bash_aliases
-
-  cat ${HOME}/.bash_aliases | grep 'alias mciosbr=' > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'alias mciosbr="mvn clean install -o spring-boot:run"' | tee -a ${HOME}/.bash_aliases
- 
 }
 
 function init_nvm() {
@@ -193,7 +53,7 @@ function install_docker() {
     cd ~ && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable" && \
     sudo apt-get update && \
-    sudo apt-get -y install docker-ce docker-compose
+    sudo apt-get -y install docker-ce
     sudo usermod -aG docker $CURRENT_USER
   else
     echo "Docker is already installed"
@@ -212,48 +72,6 @@ function install_docker_compose() {
   else
     echo "Docker Compose is already installed"
   fi	
-}
-
-function install_eclipse() {
-    TARGET_DIRECTORY=${HOME}/bin
-    ECLIPSE_HOME=${TARGET_DIRECTORY}/eclipse
-
-    if [ ! -d "$ECLIPSE_HOME" ]; then
-      mkdir -p ${TARGET_DIRECTORY} && cd ${TARGET_DIRECTORY}
-      if [ -e "${TARGET_DIRECTORY}/eclipse-jee.tar.gz" ]; then
-        echo "Eclipse File already downloaded";
-      else
-        wget -O eclipse-jee.tar.gz https://www.eclipse.org/downloads/download.php\?file\=/technology/epp/downloads/release/2020-12/R/eclipse-jee-2020-12-R-linux-gtk-x86_64.tar.gz\&r\=1
-      fi
-
-      if [ -d "${TARGET_DIRECTORY}/eclipse" ]; then
-        echo "Eclipse was already installed"
-      else
-        tar -xvzf ${TARGET_DIRECTORY}/eclipse-jee.tar.gz && \
-          rm ${TARGET_DIRECTORY}/eclipse-jee.tar.gz
-
-        ECLIPSE_INI=${ECLIPSE_HOME}/eclipse.ini
-        sed 's/-Xms.*/-Xms1024m/g' -i ${ECLIPSE_INI}
-        sed 's/-Xmx.*/-Xmx4096m/g' -i ${ECLIPSE_INI}
-
-        JAVA_BIN_PATH=${HOME}/.sdkman/candidates/java/current/bin
-        sed "s#-vmargs#-vm\n${JAVA_BIN_PATH}\n-vmargs#" -i ${ECLIPSE_INI}
-      fi
-    else
-      echo "Eclipse is already installed"
-    fi
-
-    ECLIPSE_DESKTOP_FILE_DIRECTORY=${HOME}/.local/share/applications
-    mkdir -p $ECLIPSE_DESKTOP_FILE_DIRECTORY && echo "[Desktop Entry]
-Name=Eclipse
-Type=Application
-Exec=${ECLIPSE_HOME}/eclipse
-Terminal=false
-Icon=${ECLIPSE_HOME}/icon.xpm
-Comment=Integrated Development Environment
-NoDisplay=false
-Categories=Development;IDE;
-Name[en]=Eclipse" > $ECLIPSE_DESKTOP_FILE_DIRECTORY/eclipse.desktop
 }
 
 function install_kubectl() {
@@ -337,6 +155,100 @@ function install_gradle() {
   sdk install gradle 7.0.2
 }
 
+function install_packages() {
+  cat packages.txt | xargs sudo apt-get install -y
+}
+
+function install_ohmyzsh_plugins() {
+  if [ ! -d "${HOME}/.oh-my-zsh/custom/plugins/zsh-nvm" ]; then
+    cd ${HOME}/.oh-my-zsh/custom/plugins && \
+    git clone 'https://github.com/lukechilds/zsh-nvm'
+  else
+    echo "zsh-nvm is already installed"
+  fi
+
+  if [ ! -d "${HOME}/.oh-my-zsh/plugins/zsh-sdkman" ]; then
+    cd ${HOME}/.oh-my-zsh/plugins && \
+    git clone 'https://github.com/matthieusb/zsh-sdkman.git'
+  else
+    echo "zsh-sdkman is already installed"
+  fi
+}
+
+function install_ohmyzsh() {
+  if [ ! -d "${HOME}/.oh-my-zsh" ]; then
+    cd /tmp && \
+    wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh && \
+    chmod u+x install.sh && \
+    ./install.sh
+  fi
+}
+
+function install_golang() {
+  if ! [ -d "/usr/local/go" ]; then
+    GO_VERSION=go1.16.5
+    cd ~
+    if [ ! -f "${GO_VERSION}.linux-amd64.tar.gz" ]; then
+      wget https://dl.google.com/go/${GO_VERSION}.linux-amd64.tar.gz -O ${GO_VERSION}.linux-amd64.tar.gz
+    fi
+    tar -xzf ${GO_VERSION}.linux-amd64.tar.gz && \
+      mv go ${GO_VERSION} && \
+      sudo mv ${GO_VERSION} /usr/local/${GO_VERSION} && \
+      sudo ln -sf /usr/local/${GO_VERSION} /usr/local/go && \
+      rm ${GO_VERSION}.linux-amd64.tar.gz && \
+      mkdir -p ${HOME}/golang
+
+      cat ${HOME}/.profile | grep 'export GOPATH=' > /dev/null 2>&1
+      [ $? -ne 0 ] && echo 'export GOPATH=${HOME}/golang' | tee -a ${HOME}/.profile
+      
+      cat ${HOME}/.profile | grep 'export PATH=${PATH}:/usr/local/go/bin' > /dev/null 2>&1
+      [ $? -ne 0 ] && echo 'export PATH=${PATH}:/usr/local/go/bin' | tee -a ${HOME}/.profile
+
+      cat ${HOME}/.profile | grep 'export GOBIN=' > /dev/null 2>&1
+      [ $? -ne 0 ] && echo 'export GOBIN=/usr/local/go/bin' | tee -a ${HOME}/.profile
+
+      source ${HOME}/.profile
+  else
+    echo "GoLang is already installed"
+  fi
+}
+
+function install_virtualbox() {
+  if ! [ -x "$(command -v virtualbox)" ]; then
+    cd ~ && \
+    curl -Lo virtualbox "https://download.virtualbox.org/virtualbox/6.1.18/VirtualBox-6.1.18-142142-Linux_amd64.run" && \
+    chmod u+x virtualbox && \
+    sudo ./virtualbox && \
+    rm virtualbox
+  else
+    echo "Virtualbox is already installed"
+  fi
+}
+
+function install_antlr() {
+  if ! [ -f "/usr/local/lib/antlr-4.9.2-complete.jar" ]; then
+    cd /usr/local/lib
+    sudo curl -O https://www.antlr.org/download/antlr-4.9.2-complete.jar
+
+    cat ${HOME}/.bash_aliases | grep 'alias antlr4=' > /dev/null 2>&1
+    [ $? -ne 0 ] && echo "alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'" | tee -a ${HOME}/.bash_aliases
+
+    cat ${HOME}/.bash_aliases | grep 'alias grun=' > /dev/null 2>&1
+    [ $? -ne 0 ] && echo "alias grun='java org.antlr.v4.gui.TestRig'" | tee -a ${HOME}/.bash_aliases
+
+    cat ${HOME}/.profile | grep 'export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"' > /dev/null 2>&1
+    [ $? -ne 0 ] && echo 'export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"' | tee -a ${HOME}/.profile
+  fi    
+}
+
+function create_symlinks() {
+  ln -sf ${SCRIPT_PATH}/.gitconfig ${HOME}/.gitconfig
+  ln -sf ${SCRIPT_PATH}/.gitignore ${HOME}/.gitignore
+  ln -sf ${SCRIPT_PATH}/.profile ${HOME}/.profile
+  ln -sf ${SCRIPT_PATH}/.vimrc ${HOME}/.vimrc
+  ln -sf ${SCRIPT_PATH}/.zshrc ${HOME}/.zshrc
+}
+
 # Main
 
 function main() {
@@ -355,22 +267,21 @@ function main() {
     sudo apt-get update
   fi
 
-  install_libraries
-  install_terminator
-  install_vim
-  install_git
-  install_meld
+  install_packages
+  create_symlinks
   install_sdkman
-  install_java
-  install_maven3
   install_nvm
-  install_npm
   install_docker
   install_docker_compose
-  install_eclipse
+  install_micro
+  install_ohmyzsh
+  install_ohmyzsh_plugins
+
+  install_java
+  install_maven3
+  install_npm
   install_kubectl
   install_helm3
-  install_micro
   install_code
   install_aws_cli
   install_psql
@@ -378,6 +289,9 @@ function main() {
   install_postman
   install_idea
   install_gradle
+  install_golang
+  install_virtualbox
+  install_antlr
 }
 
 main
