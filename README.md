@@ -1,6 +1,6 @@
 ## Dotfiles
 
-This project is an installation script that allows the installation of programming languages, binaries and utilities in one command!!!
+This project is an installation script that allows you the installation of programming languages, binaries and utilities in one command!!!
 
 ### Supported Operating Systems
 
