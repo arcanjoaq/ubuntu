@@ -37,6 +37,7 @@ git clone https://github.com/arcanjoaq/dotfiles.git ~/.dotfiles && cd ~/.dotfile
 * Gradle
 * Golang
 * Virtualbox
+* L2TP
 
 ### Licensing
 
