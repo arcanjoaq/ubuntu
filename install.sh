@@ -236,6 +236,13 @@ function install_l2tp() {
   sudo service xl2tpd stop && sudo update-rc.d xl2tpd disable	
 }
 
+function install_minikube() {
+  if ! [ -x "$(command -v minikube)" ]; then
+    cd ~ &&  curl -LO 'https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64' && \
+    sudo install minikube-linux-amd64 /usr/local/bin/minikube
+  fi    	
+}
+
 # Main
 
 function main() {
@@ -281,6 +288,7 @@ function main() {
   install_antlr
 
   install_l2tp
+  install_minikube
 }
 
 main

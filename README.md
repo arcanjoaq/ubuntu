@@ -28,6 +28,7 @@ git clone https://github.com/arcanjoaq/dotfiles.git ~/.dotfiles && cd ~/.dotfile
 * Maven
 * Micro editor
 * Vim
+* Minikube
 * Kubectl
 * Helm 3
 * Code
