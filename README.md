@@ -19,6 +19,7 @@ git clone https://github.com/arcanjoaq/dotfiles.git ~/.dotfiles && cd ~/.dotfile
 
 *Install.sh* installs the following tools:
 
+* Zsh
 * Terminator
 * Meld
 * Docker CE
