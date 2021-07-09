@@ -12,13 +12,9 @@ This project is an installation script that allows the installation of programmi
 The following example shows how to use the installation script:
 
 ```sh
-curl -s 'https://raw.githubusercontent.com/arcanjoaq/dotfiles/master/install.sh' | bash
-```
-
-or
-
-```sh
-wget --no-cache 'https://raw.githubusercontent.com/arcanjoaq/dotfiles/master/install.sh' && chmod u+x install.sh && ./install.sh
+git clone https://github.com/arcanjoaq/dotfiles.git .dotfiles
+cd .dotfiles
+./install.sh
 ```
 
 ### What does the script install?
@@ -26,7 +22,6 @@ wget --no-cache 'https://raw.githubusercontent.com/arcanjoaq/dotfiles/master/ins
 *Install.sh* installs the following tools:
 
 * Terminator
-* Git
 * Meld
 * Docker CE
 * Docker-Compose
