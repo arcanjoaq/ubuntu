@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function install_git() {
+  if ! [ -x "$(command -v git)" ]; then
+    echo "Installing git"
+	sudo apt-get update && sudo apt-get install git
+  fi
+}
+
+function install_dotfiles() {
+  DOTFILES_DIR=~/.dotfiles
+  if [ -d "$DOTFILES_DIR" ]; then
+    echo "Removing old dotfiles installation"
+  	rm -rf ${DOTFILES_DIR}
+  fi
+  git clone https://github.com/arcanjoaq/dotfiles.git ${DOTFILES_DIR} && cd ${DOTFILES_DIR} && ./install.sh	
+}
+
+install_git && install_dotfiles
+

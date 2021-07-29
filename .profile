@@ -14,4 +14,4 @@ fi
 
 export GOPATH=${HOME}/golang
 export PATH=${PATH}:/usr/local/go/bin
-export CLASSPATH=".:/usr/local/lib/antlr-4.9.2-complete.jar:$CLASSPATH"
+export CLASSPATH=".:/usr/local/lib/antlr.jar:$CLASSPATH"

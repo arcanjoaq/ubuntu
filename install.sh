@@ -217,7 +217,8 @@ function install_virtualbox() {
 function install_antlr() {
   if ! [ -f "/usr/local/lib/antlr-4.9.2-complete.jar" ]; then
     cd /usr/local/lib
-    sudo curl -s -O https://www.antlr.org/download/antlr-4.9.2-complete.jar
+    sudo curl -s -O https://www.antlr.org/download/antlr-4.9.2-complete.jar && \
+    sudo ln -sf /usr/local/lib/antlr-4.9.2-complete.jar /usr/local/lib/antlr.jar 
   fi    
 }
 

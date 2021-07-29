@@ -12,7 +12,7 @@ This project is an installation script that allows you the installation of progr
 The following example shows how to use the installation script:
 
 ```sh
-git clone https://github.com/arcanjoaq/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ./install.sh
+curl -s 'https://raw.githubusercontent.com/arcanjoaq/dotfiles/master/install' | bash
 ```
 
 ### What does the script install?
