@@ -31,7 +31,7 @@ function init_nvm() {
 
 function install_nvm() {
   if ! [ -x "${HOME}/.nvm" ]; then
-    cd ~ && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash && source ~/.bashrc
+    cd ~ && curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash && source ~/.bashrc
     init_nvm
   else
     echo "NVM is already installed"
@@ -64,11 +64,11 @@ function install_docker_compose() {
   if ! [ -x "$(command -v docker)" ]; then
     DOCKER_COMPOSE_VERSION=1.29.2
     DOCKER_COMPOSE_DIR=/usr/local/bin
-    sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64" -o ${DOCKER_COMPOSE_DIR}/docker-compose && \
+    sudo curl -sL "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64" -o ${DOCKER_COMPOSE_DIR}/docker-compose && \
     sudo chmod u+x ${DOCKER_COMPOSE_DIR}/docker-compose && \
     sudo ln -sf ${DOCKER_COMPOSE_DIR}/docker-compose /usr/bin/docker-compose && \
     ${DOCKER_COMPOSE_DIR}/docker-compose --version && \
-    sudo curl -L "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
+    sudo curl -sL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
   else
     echo "Docker Compose is already installed"
   fi	
@@ -76,7 +76,7 @@ function install_docker_compose() {
 
 function install_kubectl() {
   if ! [ -x "$(command -v kubectl)" ]; then
-    cd ~ && curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl && \
+    cd ~ && curl -sLO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl && \
     chmod u+x ./kubectl && \
     sudo mv ./kubectl /usr/local/bin/kubectl
   else
@@ -86,7 +86,7 @@ function install_kubectl() {
 
 function install_helm3() {
   if ! [ -x "$(command -v helm)" ]; then
-    cd ~ && curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+    cd ~ && curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
   else
     echo "Helm 3 is already installed"
   fi    
@@ -94,7 +94,7 @@ function install_helm3() {
 
 function install_micro() {
   if ! [ -x "$(command -v micro)" ]; then
-    cd ~ && curl https://getmic.ro | bash && sudo mv micro /usr/local/bin
+    cd ~ && curl -s https://getmic.ro | bash && sudo mv micro /usr/local/bin
   else
     echo "Micro is already installed"
   fi
@@ -120,7 +120,7 @@ function install_code() {
 function install_aws_cli() {
   if ! [ -x "$(command -v aws)" ]; then
     cd /tmp && \
-	  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+	  curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
 	  unzip awscliv2.zip && \
 	  sudo ./aws/install && \
 	  rm -rf aws && \
@@ -205,7 +205,7 @@ function install_golang() {
 function install_virtualbox() {
   if ! [ -x "$(command -v virtualbox)" ]; then
     cd ~ && \
-    curl -Lo virtualbox "https://download.virtualbox.org/virtualbox/6.1.18/VirtualBox-6.1.18-142142-Linux_amd64.run" && \
+    curl -sLo virtualbox "https://download.virtualbox.org/virtualbox/6.1.18/VirtualBox-6.1.18-142142-Linux_amd64.run" && \
     chmod u+x virtualbox && \
     sudo ./virtualbox && \
     rm virtualbox
@@ -217,7 +217,7 @@ function install_virtualbox() {
 function install_antlr() {
   if ! [ -f "/usr/local/lib/antlr-4.9.2-complete.jar" ]; then
     cd /usr/local/lib
-    sudo curl -O https://www.antlr.org/download/antlr-4.9.2-complete.jar
+    sudo curl -s -O https://www.antlr.org/download/antlr-4.9.2-complete.jar
   fi    
 }
 
@@ -238,7 +238,7 @@ function install_l2tp() {
 
 function install_minikube() {
   if ! [ -x "$(command -v minikube)" ]; then
-    cd ~ &&  curl -LO 'https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64' && \
+    cd ~ &&  curl -sLO 'https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64' && \
     sudo install minikube-linux-amd64 /usr/local/bin/minikube
   fi    	
 }
