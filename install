@@ -1,9 +1,15 @@
 #!/bin/bash
 
+function install_sudo() {
+  if ! [ -x "$(command -v sudo)" ]; then
+    apt-get update && apt-get install sudo
+  fi
+}
+
 function install_git() {
   if ! [ -x "$(command -v git)" ]; then
     echo "Installing git"
-	sudo apt-get update && sudo apt-get install git
+	  sudo apt-get update && sudo apt-get install git
   fi
 }
 
@@ -16,5 +22,5 @@ function install_dotfiles() {
   git clone https://github.com/arcanjoaq/dotfiles.git ${DOTFILES_DIR} && cd ${DOTFILES_DIR} && ./install.sh	
 }
 
-install_git && install_dotfiles
+install_sudo && install_git && install_dotfiles
 

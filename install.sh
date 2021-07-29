@@ -2,6 +2,14 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT")
 
+function install_snap() {
+  if ! [ -x "$(command -v snap)" ]; then
+    sudo rm /etc/apt/preferences.d/nosnap.pref > /dev/null 2>&1
+    sudo apt update && \
+    sudo apt install snapd
+  fi
+}
+
 function init_sdkman() {
   [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
 }
@@ -256,14 +264,11 @@ function main() {
   export CURRENT_USER
   echo "Current user is $CURRENT_USER"
 
-  if ! [ -x "$(command -v sudo)" ]; then
-    apt-get update && apt-get install sudo
-  else
-    sudo apt-get update
-  fi
+  sudo apt-get update
 
   install_packages
   create_symlinks
+  install_snap
   install_sdkman
   install_nvm
   install_docker
@@ -271,7 +276,6 @@ function main() {
   install_micro
   install_ohmyzsh
   install_ohmyzsh_plugins
-
   install_java
   install_maven3
   install_npm
@@ -287,7 +291,6 @@ function main() {
   install_golang
   install_virtualbox
   install_antlr
-
   install_l2tp
   install_minikube
 }
