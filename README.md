@@ -17,8 +17,9 @@ curl -s 'https://raw.githubusercontent.com/arcanjoaq/dotfiles/master/install' | 
 
 ### What does the script install?
 
-*Install.sh* installs the following tools:
+It installs the following tools:
 
+* Git
 * Zsh
 * OhMyZsh!
 * Terminator
