@@ -19,6 +19,7 @@ curl -s 'https://raw.githubusercontent.com/arcanjoaq/dotfiles/master/install' | 
 
 *Install.sh* installs the following tools:
 
+* Zsh
 * Terminator
 * Meld
 * Docker CE
