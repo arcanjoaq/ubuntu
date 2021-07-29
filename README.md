@@ -20,13 +20,14 @@ curl -s 'https://raw.githubusercontent.com/arcanjoaq/dotfiles/master/install' | 
 *Install.sh* installs the following tools:
 
 * Zsh
+* OhMyZsh!
 * Terminator
 * Meld
 * Docker CE
 * Docker-Compose
 * Java
 * Node.js
-* Maven
+* Maven 3
 * Micro editor
 * Vim
 * Minikube
@@ -36,10 +37,13 @@ curl -s 'https://raw.githubusercontent.com/arcanjoaq/dotfiles/master/install' | 
 * AWS CLI
 * psql
 * mongodb-org-shell (mongo) and mongodb-org-tools (mongoimport, mongoexport, mongodump and mongorestore)
-* Gradle
+* Gradle 7
 * Golang
 * Virtualbox
 * L2TP
+* Postman
+* Antlr
+* Intellij IDEA
 
 ### Licensing
 
